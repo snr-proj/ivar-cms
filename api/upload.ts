@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabaseAdmin } from "./_lib/supabaseAdmin";
-import { requireAdmin, sendError, HttpError } from "./_lib/auth";
+import { supabaseAdmin } from "./_lib/supabaseAdmin.js";
+import { requireAdmin, sendError, HttpError } from "./_lib/auth.js";
 
 // Images only — this app's video fields are plain URLs (e.g. a Vimeo link),
 // never binary uploads. Keep the request body small and bounded.

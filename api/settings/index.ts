@@ -1,7 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabaseAdmin } from "../_lib/supabaseAdmin";
-import { requireAdmin, sendError, HttpError } from "../_lib/auth";
-
+import { supabaseAdmin } from "../_lib/supabaseAdmin.js";
+import { requireAdmin, sendError, HttpError } from "../_lib/auth.js";
 /**
  * site_settings is a single-row table — there's no list/CRUD UX for it, so
  * it gets one endpoint instead of the generic resource handler.

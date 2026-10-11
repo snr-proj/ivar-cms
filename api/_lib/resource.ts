@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabaseAdmin } from "./supabaseAdmin";
-import { requireAdmin, sendError, HttpError } from "./auth";
+import { supabaseAdmin } from "./supabaseAdmin.js";
+import { requireAdmin, sendError, HttpError } from "./auth.js";
 
 interface ResourceOptions {
   table: string;
