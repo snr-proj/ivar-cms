@@ -1,4 +1,4 @@
-import { resourceListHandler } from "../_lib/resource";
+import { resourceListHandler } from "../_lib/resource.js";
 
 export default resourceListHandler({
   table: "experience",
