@@ -6,12 +6,12 @@ import { requireAdmin, sendError, HttpError } from "./_lib/auth.js";
 // never binary uploads. Keep the request body small and bounded.
 export const config = {
   api: {
-    bodyParser: { sizeLimit: "8mb" },
+    bodyParser: { sizeLimit: "4mb" },
   },
 };
 
 const ALLOWED_BUCKETS = new Set(["portfolio-images", "portfolio-videos"]);
-const MAX_BYTES = 8 * 1024 * 1024;
+const MAX_BYTES = 3 * 1024 * 1024; // 3MB raw — Vercel's 4.5MB request limit after base64 overhead
 
 /**
  * POST /api/upload — requires admin
@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const buffer = Buffer.from(fileBase64, "base64");
     if (buffer.byteLength > MAX_BYTES) {
-      throw new HttpError(413, "File too large (8MB limit)");
+      throw new HttpError(413, "File too large (3MB limit)");
     }
 
     const { error: uploadError } = await supabaseAdmin.storage.from(bucket).upload(path, buffer, {
