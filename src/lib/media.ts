@@ -25,3 +25,27 @@ export function resolveMediaUrl(
   const { data } = supabase.storage.from(bucket).getPublicUrl(value);
   return data.publicUrl;
 }
+
+/**
+ * Converts a YouTube or Vimeo watch/share link (as pasted by a human into
+ * the admin's "Video URL" field) into an embeddable iframe src. Any other
+ * URL is returned unchanged — ProjectDetail falls back to a plain "Watch
+ * video" link for those instead of an iframe.
+ */
+export function getVideoEmbedUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+
+  const youtubeMatch = url.match(
+    /(?:youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+  if (youtubeMatch) {
+    return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+  }
+
+  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeoMatch) {
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  }
+
+  return null;
+}

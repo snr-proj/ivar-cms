@@ -1,10 +1,10 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import { useProject } from "@/hooks/usePortfolioData";
-import { resolveMediaUrl } from "@/lib/media";
+import { resolveMediaUrl, getVideoEmbedUrl } from "@/lib/media";
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -30,6 +30,7 @@ export default function ProjectDetail() {
   }
 
   const gallery = (project.gallery_images ?? []).filter(Boolean);
+  const videoEmbedUrl = getVideoEmbedUrl(project.video_url);
 
   return (
     <>
@@ -80,6 +81,31 @@ export default function ProjectDetail() {
                 alt={project.title}
                 className="w-full aspect-[16/9] object-cover mb-12"
               />
+            </RevealOnScroll>
+          )}
+
+          {project.video_url && (
+            <RevealOnScroll delay={0.17}>
+              {videoEmbedUrl ? (
+                <div className="w-full aspect-[16/9] mb-12">
+                  <iframe
+                    src={videoEmbedUrl}
+                    title={`${project.title} video`}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <a
+                  href={project.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="label flex items-center gap-2 mb-12 hover:text-accent transition-colors w-fit"
+                >
+                  WATCH VIDEO <ArrowUpRight size={16} />
+                </a>
+              )}
             </RevealOnScroll>
           )}
 

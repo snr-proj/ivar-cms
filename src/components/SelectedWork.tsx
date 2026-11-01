@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionLabel from "./SectionLabel";
 import { useProjects } from "@/hooks/usePortfolioData";
@@ -39,8 +40,12 @@ export default function SelectedWork() {
 
                 <div>
                   <span className="label">{project.project_type}</span>
-                  <h3 className="font-sans font-extrabold text-project leading-[0.95] mt-3 mb-4">
+                  <h3 className="font-sans font-extrabold text-project leading-[0.95] mt-3 mb-4 flex items-start gap-3">
                     {project.client ?? project.title}
+                    <ArrowUpRight
+                      size={28}
+                      className="shrink-0 mt-1 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                    />
                   </h3>
                   <p className="text-muted leading-relaxed max-w-xl mb-4">
                     {project.description}
