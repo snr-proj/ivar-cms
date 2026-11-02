@@ -9,6 +9,12 @@ export default function DigitalOOH() {
   const { data: projects } = useProjects("digital-ooh");
   const general = projects[0];
 
+  const stages = [
+    { label: "CLIENT MATERIAL", src: general?.ooh_original_material },
+    { label: "ADAPTATION", src: general?.ooh_adapted_material },
+    { label: "LIVE DISPLAY", src: general?.ooh_live_display_image },
+  ].filter((stage) => stage.src);
+
   return (
     <section className="bg-secondary py-24 md:py-36">
       <div className="max-w-container mx-auto px-6 md:px-10">
@@ -33,15 +39,29 @@ export default function DigitalOOH() {
           </div>
         </RevealOnScroll>
 
-        <div className="grid md:grid-cols-[1fr_1fr] gap-12 items-start">
-          <RevealOnScroll delay={0.15}>
-            <p className="text-ink/90 text-lg leading-relaxed max-w-xl">
-              {general?.description ??
-                "In addition to production work, I edit, resize, and re-layout client-provided visual materials according to LED display specifications. I prepare and fit digital assets for various out-of-home formats, including gantry LEDs, standard LED billboards, and 3D digital billboards around BGC."}
-            </p>
-          </RevealOnScroll>
+        <RevealOnScroll delay={0.15}>
+          <p className="text-ink/90 text-lg leading-relaxed max-w-xl mb-14">
+            {general?.description ??
+              "In addition to production work, I edit, resize, and re-layout client-provided visual materials according to LED display specifications. I prepare and fit digital assets for various out-of-home formats, including gantry LEDs, standard LED billboards, and 3D digital billboards around BGC."}
+          </p>
+        </RevealOnScroll>
 
-          {general?.cover_image && (
+        {stages.length > 0 ? (
+          <div className="grid md:grid-cols-3 gap-6">
+            {stages.map((stage, i) => (
+              <RevealOnScroll key={stage.label} delay={0.2 + i * 0.08}>
+                <p className="label mb-3">{stage.label}</p>
+                <img
+                  src={resolveMediaUrl(stage.src) ?? undefined}
+                  alt={`${stage.label} — Digital OOH / LED content`}
+                  className="w-full aspect-[4/5] object-cover"
+                  loading="lazy"
+                />
+              </RevealOnScroll>
+            ))}
+          </div>
+        ) : (
+          general?.cover_image && (
             <RevealOnScroll delay={0.2}>
               <img
                 src={resolveMediaUrl(general.cover_image) ?? undefined}
@@ -50,8 +70,8 @@ export default function DigitalOOH() {
                 loading="lazy"
               />
             </RevealOnScroll>
-          )}
-        </div>
+          )
+        )}
       </div>
     </section>
   );
