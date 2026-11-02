@@ -54,7 +54,7 @@ export default function DigitalOOH() {
                 <img
                   src={resolveMediaUrl(stage.src) ?? undefined}
                   alt={`${stage.label} — Digital OOH / LED content`}
-                  className="w-full aspect-[4/5] object-cover"
+                  className="w-full aspect-[4/3] object-cover"
                   loading="lazy"
                 />
               </RevealOnScroll>

@@ -137,7 +137,7 @@ export default function ProjectDetail() {
                   <img
                     src={resolveMediaUrl(src) ?? undefined}
                     alt={`${project.title} gallery ${i + 1}`}
-                    className="w-full aspect-[4/5] object-cover"
+                    className="w-full aspect-[4/3] object-cover"
                     loading="lazy"
                   />
                 </RevealOnScroll>
