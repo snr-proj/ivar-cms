@@ -27,6 +27,8 @@ export interface Project {
   cover_image: string | null;
   gallery_images: string[] | null;
   video_url: string | null;
+  /** id of the brand page this project is listed under; null/undefined = top-level */
+  parent_id?: string | null;
   // Digital OOH–specific fields (nullable; only used when category = 'digital-ooh')
   ooh_format: string | null;
   ooh_location: string | null;

@@ -14,6 +14,8 @@ import {
   NumberInput,
   required,
   useRecordContext,
+  ReferenceField,
+  ReferenceInput,
 } from "react-admin";
 import ImageUploadInput from "../components/ImageUploadInput";
 import StringListInput from "../components/StringListInput";
@@ -33,6 +35,9 @@ export function ProjectList() {
         <TextField source="title" />
         <TextField source="category" />
         <TextField source="client" />
+        <ReferenceField source="parent_id" reference="projects" label="Parent brand" emptyText="—" link={false}>
+        <TextField source="title" />
+        </ReferenceField>
         <BooleanField source="featured" />
         <BooleanField source="published" />
         <NumberField source="sort_order" />
@@ -68,6 +73,21 @@ function ProjectForm() {
       />
       <TextInput source="client" fullWidth />
       <SelectInput source="category" choices={categoryChoices} validate={required()} />
+      <ReferenceInput
+  source="parent_id"
+  reference="projects"
+  label="Parent brand"
+  perPage={100}
+  sort={{ field: "title", order: "ASC" }}
+>
+  <SelectInput
+    optionText="title"
+    emptyText="— None (top-level brand) —"
+    parse={(v: string) => (v === "" ? null : v)}
+    helperText="Leave empty for a brand that shows in the carousel. Pick a brand to list this project inside that brand's page instead."
+    fullWidth
+  />
+      </ReferenceInput>
       <TextInput source="project_type" label="Project type" fullWidth />
       <TextInput source="production_company" label="Production company" fullWidth />
       <TextInput source="role" fullWidth />

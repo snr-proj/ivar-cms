@@ -48,7 +48,11 @@ function useSupabaseQuery<T>(
   return state;
 }
 
-/** All published projects, optionally filtered by category. */
+/**
+ * All published TOP-LEVEL projects, optionally filtered by category.
+ * Projects that belong to a brand (parent_id set) are left out here — they
+ * only appear on their brand's page (see useChildProjects).
+ */
 export function useProjects(category?: ProjectCategory) {
   return useSupabaseQuery<Project[]>(
     `projects-${category ?? "all"}`,
@@ -62,9 +66,46 @@ export function useProjects(category?: ProjectCategory) {
         query = query.eq("category", category);
       }
       const { data, error } = await query;
+      const topLevel = ((data as Project[] | null) ?? []).filter((p) => !p.parent_id);
+      return { data: error ? null : topLevel, error };
+    },
+    []
+  );
+}
+
+/** Published projects listed under a brand (parent_id = the brand's id). */
+export function useChildProjects(parentId: string | undefined) {
+  return useSupabaseQuery<Project[]>(
+    `children-${parentId ?? "none"}`,
+    async () => {
+      if (!parentId) return { data: [], error: null };
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("parent_id", parentId)
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
       return { data: data as Project[] | null, error };
     },
     []
+  );
+}
+
+/** A single project by id (used to find a sub-project's parent brand). */
+export function useProjectById(id: string | null | undefined) {
+  return useSupabaseQuery<Project | null>(
+    `project-id-${id ?? "none"}`,
+    async () => {
+      if (!id) return { data: null, error: null };
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("id", id)
+        .eq("published", true)
+        .maybeSingle();
+      return { data: data as Project | null, error };
+    },
+    null
   );
 }
 

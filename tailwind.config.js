@@ -10,6 +10,7 @@ export default {
         muted: "#A0A0A0",
         line: "#464646",
         accent: "#899474",
+        highlight: "#7CCBD2",
       },
       fontFamily: {
         sans: ["Manrope", "Inter", "Arial", "sans-serif"],

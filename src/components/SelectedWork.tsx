@@ -1,12 +1,44 @@
-import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import RevealOnScroll from "./RevealOnScroll";
 import SectionLabel from "./SectionLabel";
+import ProjectCard from "./ProjectCard";
 import { useProjects } from "@/hooks/usePortfolioData";
-import { resolveMediaUrl } from "@/lib/media";
+
+const GAP = 24; // px — keep in sync with gap-6
 
 export default function SelectedWork() {
   const { data: projects, loading } = useProjects("commercial");
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const updateButtons = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    updateButtons();
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    return () => {
+      el.removeEventListener("scroll", updateButtons);
+      window.removeEventListener("resize", updateButtons);
+    };
+  }, [projects, updateButtons]);
+
+  const scrollByCard = (direction: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.firstElementChild as HTMLElement | null;
+    const step = card ? card.offsetWidth + GAP : el.clientWidth * 0.8;
+    el.scrollBy({ left: direction * step, behavior: "smooth" });
+  };
 
   if (!loading && projects.length === 0) return null;
 
@@ -14,56 +46,53 @@ export default function SelectedWork() {
     <section id="work" className="bg-primary py-24 md:py-36">
       <div className="max-w-container mx-auto px-6 md:px-10">
         <SectionLabel index="03" title="SELECTED WORK" />
-        <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-16">
-            COMMERCIAL
-            <br />
-            PRODUCTION
-          </h2>
-        </RevealOnScroll>
 
-        <div className="flex flex-col divide-y divide-line">
-          {projects.map((project, i) => (
-            <RevealOnScroll key={project.id} delay={i * 0.08}>
-              <Link
-                to={`/work/${project.slug}`}
-                className="group grid md:grid-cols-[1fr_1.4fr] gap-8 md:gap-16 py-12 items-center"
-              >
-                <div className="overflow-hidden">
-                  <img
-                    src={resolveMediaUrl(project.cover_image) ?? undefined}
-                    alt={`${project.client ?? project.title} cover`}
-                    className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
+        <div className="mb-12 flex items-end justify-between gap-6">
+          <RevealOnScroll>
+            <h2 className="font-sans font-extrabold text-section leading-[0.95]">
+              COMMERCIAL
+              <br />
+              PRODUCTION
+            </h2>
+          </RevealOnScroll>
 
-                <div>
-                  <span className="label">{project.project_type}</span>
-                  <h3 className="font-sans font-extrabold text-project leading-[0.95] mt-3 mb-4 flex items-start gap-3">
-                    {project.client ?? project.title}
-                    <ArrowUpRight
-                      size={28}
-                      className="shrink-0 mt-1 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                    />
-                  </h3>
-                  <p className="text-muted leading-relaxed max-w-xl mb-4">
-                    {project.description}
-                  </p>
-                  {project.contributions && project.contributions.length > 0 && (
-                    <div className="flex flex-wrap gap-x-4 gap-y-1">
-                      {project.contributions.map((c) => (
-                        <span key={c} className="text-xs text-accent uppercase tracking-label">
-                          {c}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </Link>
-            </RevealOnScroll>
-          ))}
+          <div className="flex shrink-0 gap-3">
+            <button
+              type="button"
+              aria-label="Previous projects"
+              onClick={() => scrollByCard(-1)}
+              disabled={!canPrev}
+              className="grid h-11 w-11 place-items-center rounded-full border border-line text-ink transition-colors hover:bg-ink hover:text-primary disabled:pointer-events-none disabled:opacity-30"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              type="button"
+              aria-label="Next projects"
+              onClick={() => scrollByCard(1)}
+              disabled={!canNext}
+              className="grid h-11 w-11 place-items-center rounded-full border border-line text-ink transition-colors hover:bg-ink hover:text-primary disabled:pointer-events-none disabled:opacity-30"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
+
+        <RevealOnScroll>
+          <div
+            ref={scrollerRef}
+            className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2"
+          >
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="w-[80vw] shrink-0 snap-start sm:w-[400px] lg:w-[440px]"
+              >
+                <ProjectCard project={project} />
+              </div>
+            ))}
+          </div>
+        </RevealOnScroll>
       </div>
     </section>
   );

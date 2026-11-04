@@ -1,14 +1,19 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RevealOnScroll from "@/components/RevealOnScroll";
-import { useProject } from "@/hooks/usePortfolioData";
-import { resolveMediaUrl, getVideoEmbedUrl } from "@/lib/media";
+import ProjectCard from "@/components/ProjectCard";
+import ScrollToTop from "@/components/ScrollToTop";
+import { useProject, useChildProjects, useProjectById } from "@/hooks/usePortfolioData";
+import { resolveMediaUrl } from "@/lib/media";
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: project, loading } = useProject(slug);
+  // Hooks must run before any early return below.
+  const { data: children } = useChildProjects(project?.id);
+  const { data: parent } = useProjectById(project?.parent_id);
 
   if (loading) {
     return (
@@ -30,7 +35,11 @@ export default function ProjectDetail() {
   }
 
   const gallery = (project.gallery_images ?? []).filter(Boolean);
-  const videoEmbedUrl = getVideoEmbedUrl(project.video_url);
+  const brandName = project.client ?? project.title;
+
+  // A sub-project goes back to its brand page; a brand goes back to the carousel.
+  const backTo = parent ? `/work/${parent.slug}` : "/#work";
+  const backLabel = parent ? `BACK TO ${(parent.client ?? parent.title).toUpperCase()}` : "BACK";
 
   return (
     <>
@@ -38,16 +47,16 @@ export default function ProjectDetail() {
       <main className="bg-primary pt-32 pb-24">
         <div className="max-w-container mx-auto px-6 md:px-10">
           <Link
-            to="/#work"
+            to={backTo}
             className="label flex items-center gap-2 mb-10 hover:text-accent transition-colors w-fit"
           >
-            <ArrowLeft size={16} /> BACK
+            <ArrowLeft size={16} /> {backLabel}
           </Link>
 
           <RevealOnScroll>
             <span className="label">{project.project_type}</span>
             <h1 className="font-sans font-extrabold text-section leading-[0.95] mt-3 mb-6">
-              {project.client ?? project.title}
+              {brandName}
             </h1>
           </RevealOnScroll>
 
@@ -79,33 +88,21 @@ export default function ProjectDetail() {
               <img
                 src={resolveMediaUrl(project.cover_image) ?? undefined}
                 alt={project.title}
-                className="w-full aspect-[16/9] object-cover mb-12"
+                className="w-full max-w-xl aspect-[4/3] object-cover rounded-2xl mb-10"
               />
             </RevealOnScroll>
           )}
 
           {project.video_url && (
             <RevealOnScroll delay={0.17}>
-              {videoEmbedUrl ? (
-                <div className="w-full aspect-[16/9] mb-12">
-                  <iframe
-                    src={videoEmbedUrl}
-                    title={`${project.title} video`}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              ) : (
-                <a
-                  href={project.video_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="label flex items-center gap-2 mb-12 hover:text-accent transition-colors w-fit"
-                >
-                  WATCH VIDEO <ArrowUpRight size={16} />
-                </a>
-              )}
+              <a
+                href={project.video_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mb-12 inline-flex items-center gap-3 rounded-full bg-highlight px-7 py-4 text-sm font-semibold uppercase tracking-wide text-primary transition-[filter] hover:brightness-110"
+              >
+                WATCH VIDEO <ExternalLink size={16} />
+              </a>
             </RevealOnScroll>
           )}
 
@@ -130,14 +127,30 @@ export default function ProjectDetail() {
             </RevealOnScroll>
           )}
 
+          {/* Other commercials / projects listed under this brand */}
+          {children.length > 0 && (
+            <section className="mb-16">
+              <RevealOnScroll>
+                <p className="label mb-6">MORE FROM {brandName.toUpperCase()}</p>
+              </RevealOnScroll>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {children.map((child, i) => (
+                  <RevealOnScroll key={child.id} delay={i * 0.06}>
+                    <ProjectCard project={child} />
+                  </RevealOnScroll>
+                ))}
+              </div>
+            </section>
+          )}
+
           {gallery.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {gallery.map((src, i) => (
                 <RevealOnScroll key={src} delay={i * 0.06}>
                   <img
                     src={resolveMediaUrl(src) ?? undefined}
                     alt={`${project.title} gallery ${i + 1}`}
-                    className="w-full aspect-[4/3] object-cover"
+                    className="w-full aspect-[4/3] object-cover rounded-xl"
                     loading="lazy"
                   />
                 </RevealOnScroll>
@@ -147,6 +160,7 @@ export default function ProjectDetail() {
         </div>
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

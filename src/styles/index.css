@@ -38,6 +38,13 @@ body {
   color: #899474;
   font-weight: 600;
 }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 .editorial-rule {
   height: 1px;
