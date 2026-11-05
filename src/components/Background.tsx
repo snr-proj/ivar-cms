@@ -9,8 +9,8 @@ export default function Background() {
   if (!education) return null;
 
   return (
-    <section className="bg-primary py-20 md:py-28">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section className="bg-primary py-14 sm:py-20 lg:py-24">
+      <div className="container-x">
         <SectionLabel index="11" title="BACKGROUND" />
 
         <RevealOnScroll>

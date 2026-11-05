@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 import type { ReactNode, ElementType } from "react";
 
 interface RevealOnScrollProps {
@@ -18,7 +19,9 @@ export default function RevealOnScroll({
   as = "div",
   amount = 0.2,
 }: RevealOnScrollProps) {
-  const MotionTag = motion(as as ElementType);
+  // Memoised: creating motion(as) inline made a brand-new component type on every
+  // render, which remounted all children (and reset the carousel scroll position).
+  const MotionTag = useMemo(() => motion(as as ElementType), [as]);
   return (
     <MotionTag
       className={className}

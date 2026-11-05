@@ -9,18 +9,18 @@ export default function BehindTheScenes() {
   if (!loading && projects.length === 0) return null;
 
   return (
-    <section className="bg-secondary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section className="bg-secondary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="08" title="BEHIND THE SCENES" />
         <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-6">
+          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-5 sm:mb-6">
             EARLY PRODUCTION
             <br />
             EXPERIENCE
           </h2>
         </RevealOnScroll>
         <RevealOnScroll delay={0.1}>
-          <p className="text-muted max-w-2xl mb-12 leading-relaxed">
+          <p className="mb-10 max-w-2xl leading-relaxed text-muted sm:mb-12">
             Gained hands-on experience across production, content creation, and
             event coverage with When in Rizal — shoot preparation, equipment
             handling, shot-list development, production assistance, hosting,
@@ -29,14 +29,14 @@ export default function BehindTheScenes() {
         </RevealOnScroll>
       </div>
 
-      {/* Desktop: horizontal scroll. Mobile: vertical stack. */}
-      <div className="max-w-container mx-auto px-6 md:px-10">
-        <div className="flex gap-4 overflow-x-auto md:overflow-x-scroll pb-4 snap-x snap-mandatory md:flex-row flex-col md:[&>*]:snap-start">
+      {/* Desktop: horizontal scroll. Mobile: 2-column grid. */}
+      <div className="container-x">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:flex md:snap-x md:snap-mandatory md:overflow-x-auto md:pb-4">
           {projects.map((project, i) => (
             <RevealOnScroll
               key={project.id}
               delay={i * 0.05}
-              className="shrink-0 w-full md:w-[320px]"
+              className="min-w-0 md:w-[280px] md:shrink-0 md:snap-start lg:w-[320px]"
             >
               <div className="overflow-hidden mb-3">
                 <img

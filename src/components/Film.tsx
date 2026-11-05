@@ -10,16 +10,16 @@ export default function Film() {
   if (!loading && projects.length === 0) return null;
 
   return (
-    <section className="bg-primary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section className="bg-primary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="06" title="FILM" />
         <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-16">
+          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-10 sm:mb-16">
             FILM
           </h2>
         </RevealOnScroll>
 
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid gap-10 md:grid-cols-2 md:gap-x-8 lg:gap-x-12">
           {projects.map((project, i) => (
             <RevealOnScroll key={project.id} delay={i * 0.1}>
               <Link to={`/work/${project.slug}`} className="group block">

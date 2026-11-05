@@ -19,6 +19,7 @@ import {
 } from "react-admin";
 import ImageUploadInput from "../components/ImageUploadInput";
 import StringListInput from "../components/StringListInput";
+import GalleryUploadInput from "../components/GalleryUploadInput";
 
 const categoryChoices = [
   { id: "commercial", name: "Commercial" },
@@ -103,10 +104,10 @@ function ProjectForm() {
       <NumberInput source="sort_order" defaultValue={0} />
 
       <ImageUploadInput source="cover_image" label="Cover image" />
-      <StringListInput
+      <GalleryUploadInput
         source="gallery_images"
-        label="Gallery images (paths)"
-        helperText="Upload cover first, then add additional Storage paths here — or leave blank and manage via Media later"
+        label="Gallery pictures (add at least 3)"
+        minimum={3}
       />
       <TextInput source="video_url" label="Video URL" fullWidth />
 

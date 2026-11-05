@@ -16,21 +16,21 @@ export default function DigitalOOH() {
   ].filter((stage) => stage.src);
 
   return (
-    <section className="bg-secondary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section className="bg-secondary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="05" title="DIGITAL OOH" />
 
         <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-10">
+          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-8 sm:mb-10">
             LED / DIGITAL OOH
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
-          <div className="flex flex-wrap items-center gap-3 mb-12">
+          <div className="mb-10 flex flex-wrap items-center gap-x-3 gap-y-3 sm:mb-12">
             {flow.map((step, i) => (
               <span key={step} className="flex items-center gap-3">
-                <span className="label !text-ink border border-line rounded-full px-4 py-2">
+                <span className="label whitespace-nowrap rounded-full border border-line px-3 py-1.5 !text-ink sm:px-4 sm:py-2">
                   {step}
                 </span>
                 {i < flow.length - 1 && <span className="text-accent">→</span>}
@@ -40,7 +40,7 @@ export default function DigitalOOH() {
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.15}>
-          <p className="text-ink/90 text-lg leading-relaxed max-w-xl mb-14">
+          <p className="mb-10 max-w-2xl text-base leading-relaxed text-ink/90 sm:mb-14 sm:text-lg">
             {general?.description ??
               "In addition to production work, I edit, resize, and re-layout client-provided visual materials according to LED display specifications. I prepare and fit digital assets for various out-of-home formats, including gantry LEDs, standard LED billboards, and 3D digital billboards around BGC."}
           </p>

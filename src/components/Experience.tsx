@@ -14,11 +14,11 @@ export default function Experience() {
   const { data: experience } = useExperience();
 
   return (
-    <section id="experience" className="bg-primary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section id="experience" className="bg-primary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="09" title="EXPERIENCE" />
         <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-16">
+          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-10 sm:mb-16">
             EXPERIENCE
           </h2>
         </RevealOnScroll>
@@ -28,9 +28,9 @@ export default function Experience() {
             const range = formatRange(exp.start_date, exp.end_date, exp.current);
             return (
               <RevealOnScroll key={exp.id} delay={i * 0.08}>
-                <div className="grid md:grid-cols-[1fr_2fr] gap-6 py-10">
-                  <div>
-                    <h3 className="font-sans font-bold text-xl md:text-2xl">
+                <div className="grid gap-4 py-8 md:grid-cols-12 md:gap-12 md:py-10 lg:gap-16">
+                  <div className="md:col-span-5">
+                    <h3 className="font-sans text-xl font-bold md:text-2xl">
                       {exp.company}
                     </h3>
                     {exp.organization && (
@@ -39,8 +39,8 @@ export default function Experience() {
                     {range && <p className="label mt-3">{range}</p>}
                   </div>
 
-                  <div>
-                    <p className="text-ink/90 font-medium mb-2">{exp.position}</p>
+                  <div className="md:col-span-7">
+                    <p className="mb-2 font-medium text-ink/90">{exp.position}</p>
                     {exp.description && (
                       <p className="text-muted leading-relaxed mb-4 max-w-2xl">
                         {exp.description}

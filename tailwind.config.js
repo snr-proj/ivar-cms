@@ -17,9 +17,9 @@ export default {
         serif: ["Cormorant Garamond", "serif"],
       },
       fontSize: {
-        hero: "clamp(4rem, 9vw, 9rem)",
-        section: "clamp(2.5rem, 6vw, 6rem)",
-        project: "clamp(2rem, 4vw, 4.5rem)",
+        hero: "clamp(2.25rem, 9.5vw, 9rem)",
+        section: "clamp(2rem, 6vw, 6rem)",
+        project: "clamp(1.75rem, 4vw, 4.5rem)",
       },
       letterSpacing: {
         label: "0.1em",

@@ -43,11 +43,11 @@ export default function SelectedWork() {
   if (!loading && projects.length === 0) return null;
 
   return (
-    <section id="work" className="bg-primary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section id="work" className="bg-primary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="03" title="SELECTED WORK" />
 
-        <div className="mb-12 flex items-end justify-between gap-6">
+        <div className="mb-8 flex items-end justify-between gap-4 sm:mb-12 sm:gap-6">
           <RevealOnScroll>
             <h2 className="font-sans font-extrabold text-section leading-[0.95]">
               COMMERCIAL
@@ -81,12 +81,12 @@ export default function SelectedWork() {
         <RevealOnScroll>
           <div
             ref={scrollerRef}
-            className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2"
+            className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-5 px-5 pb-2 sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:scroll-px-0 lg:px-0"
           >
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="w-[80vw] shrink-0 snap-start sm:w-[400px] lg:w-[440px]"
+                className="w-[82vw] shrink-0 snap-start sm:w-[360px] lg:w-[400px] xl:w-[440px]"
               >
                 <ProjectCard project={project} />
               </div>

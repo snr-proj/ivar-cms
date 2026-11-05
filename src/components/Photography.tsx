@@ -21,22 +21,22 @@ export default function Photography() {
   );
 
   return (
-    <section className="bg-primary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section className="bg-primary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="07" title="PHOTOGRAPHY" />
 
         {projects.map((project) => (
-          <div key={project.id} className="mb-16">
+          <div key={project.id} className="mb-12 last:mb-0 sm:mb-16">
             <RevealOnScroll>
               <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-4">
                 {project.title.toUpperCase()}
               </h2>
-              <p className="text-muted max-w-2xl mb-10 leading-relaxed">
+              <p className="mb-8 max-w-2xl leading-relaxed text-muted sm:mb-10">
                 {project.description}
               </p>
             </RevealOnScroll>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
               {(project.gallery_images?.length ? project.gallery_images : [project.cover_image])
                 .filter((src): src is string => Boolean(src))
                 .map((src, i) => {

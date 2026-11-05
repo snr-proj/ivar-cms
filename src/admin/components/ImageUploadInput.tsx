@@ -1,26 +1,12 @@
 import { useState } from "react";
 import { useInput } from "react-admin";
-import { supabase } from "@/lib/supabase";
 import { resolveMediaUrl } from "@/lib/media";
+import { uploadImage } from "./uploadImage";
 
 interface ImageUploadInputProps {
   source: string;
   label?: string;
   bucket?: "portfolio-images" | "portfolio-videos";
-}
-
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      // Strip the "data:<mime>;base64," prefix — the API only wants the payload.
-      const commaIndex = result.indexOf(",");
-      resolve(commaIndex >= 0 ? result.slice(commaIndex + 1) : result);
-    };
-    reader.onerror = () => reject(reader.error ?? new Error("Could not read file"));
-    reader.readAsDataURL(file);
-  });
 }
 
 /**
@@ -46,28 +32,7 @@ export default function ImageUploadInput({
     setUploading(true);
     setUploadError(null);
     try {
-      const ext = file.name.split(".").pop() ?? "jpg";
-      const path = `${source}/${crypto.randomUUID()}.${ext}`;
-      const fileBase64 = await fileToBase64(file);
-
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({ bucket, path, fileBase64, contentType: file.type }),
-      });
-
-      const body = await res.json().catch(() => null);
-      if (!res.ok) {
-        throw new Error(body?.error ?? `Upload failed (${res.status})`);
-      }
-
-      onChange(body.data.path as string);
+      onChange(await uploadImage(file, source, bucket));
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Upload failed");
     } finally {

@@ -19,16 +19,16 @@ export default function Capabilities() {
   }));
 
   return (
-    <section className="bg-secondary py-24 md:py-36">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section className="bg-secondary py-16 sm:py-24 lg:py-32">
+      <div className="container-x">
         <SectionLabel index="10" title="CAPABILITIES" />
         <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-16">
+          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-10 sm:mb-16">
             CAPABILITIES
           </h2>
         </RevealOnScroll>
 
-        <div className="grid md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-10">
           {grouped.map((group, i) => (
             <RevealOnScroll key={group.category} delay={i * 0.08}>
               <h3 className="label mb-5">{group.category}</h3>

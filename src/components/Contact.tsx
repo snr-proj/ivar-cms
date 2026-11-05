@@ -14,12 +14,12 @@ export default function Contact() {
   ].filter((s) => Boolean(s.url));
 
   return (
-    <section id="contact" className="bg-primary py-24 md:py-40">
-      <div className="max-w-container mx-auto px-6 md:px-10">
+    <section id="contact" className="bg-primary py-16 sm:py-24 lg:py-36">
+      <div className="container-x">
         <SectionLabel index="12" title="CONTACT" />
 
         <RevealOnScroll>
-          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-12">
+          <h2 className="font-sans font-extrabold text-section leading-[0.95] mb-8 sm:mb-12">
             LET'S WORK
             <br />
             TOGETHER.
@@ -27,9 +27,9 @@ export default function Contact() {
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
-          <div className="grid md:grid-cols-2 gap-10">
-            <div>
-              <p className="text-ink font-semibold text-lg">
+          <div className="grid gap-8 md:grid-cols-12 md:gap-12 lg:gap-16">
+            <div className="md:col-span-5">
+              <p className="text-lg font-semibold text-ink">
                 {settings?.name ?? "Ivar Delos Santos"}
               </p>
               <p className="text-muted">
@@ -40,11 +40,11 @@ export default function Contact() {
               </p>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex min-w-0 flex-col gap-3 md:col-span-7">
               {settings?.email && (
                 <a
                   href={`mailto:${settings.email}`}
-                  className="text-xl font-semibold hover:text-accent transition-colors"
+                  className="break-words text-base font-semibold transition-colors hover:text-accent sm:text-xl"
                 >
                   {settings.email}
                 </a>
@@ -52,7 +52,7 @@ export default function Contact() {
               {settings?.phone && (
                 <a
                   href={`tel:${settings.phone.replace(/\s+/g, "")}`}
-                  className="text-xl font-semibold hover:text-accent transition-colors"
+                  className="break-words text-base font-semibold transition-colors hover:text-accent sm:text-xl"
                 >
                   {settings.phone}
                 </a>

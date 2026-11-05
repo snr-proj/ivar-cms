@@ -23,10 +23,10 @@ export default function Hero() {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-primary/30" />
 
-      <div className="relative z-10 max-w-container mx-auto h-screen flex flex-col justify-between px-6 md:px-10 pt-28 pb-12">
+      <div className="relative z-10 container-x flex min-h-[100svh] flex-col justify-between pt-24 pb-8 sm:pt-28 sm:pb-12">
         <div />
 
-        <div className="max-w-5xl">
+        <div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -42,7 +42,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-6 text-lg md:text-2xl text-muted font-light max-w-xl"
+            className="mt-5 max-w-xl text-base font-light text-muted sm:mt-6 sm:text-lg md:text-2xl"
           >
             {settings?.professional_title ?? "Media Production Artist / Production Specialist"}
           </motion.p>
@@ -69,7 +69,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9 }}
-          className="label self-start md:self-end flex items-center gap-2 hover:text-accent transition-colors"
+          className="label flex items-center gap-2 self-start transition-colors hover:text-accent"
         >
           SCROLL TO EXPLORE
           <motion.span
